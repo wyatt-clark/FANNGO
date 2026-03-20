@@ -1,0 +1,79 @@
+This is the MATLAB version of FANN-GO
+
+System Requirements
+
+MATLAB - Version ?? or later
+Operating System - Linux X86, Linux X64, OSX, Win 64
+Hard Drive - 1.3GB
+RAM - 1GB (more sequences will require more RAM)
+
+
+Not Required:
+
+IT IS NOT REQUIRED THAT YOU HAVE BLAST INSTALLED ON YOUR MACHINE.  If you already did, this is fine, we have the path to the provided BLAST executables hard coded into the program.  The BLAST database for our set of sequences is already built and should not be touched.
+
+
+How to Install:
+
+You first need to download the tar.gz file corresponding to your particular architecture
+
+Note that you will need approximately 1.3 GB of free space to install FANNGO after uncompressing and removing the compressed archive. Once you have this file downloaded place it in the directory on your machine from which you want to work. In order to untar the archived file type:
+
+tar -xvzf FANNGO_your_architecture.tar.gz
+
+While most operating systems have the necessary software and executables to handle tar.gx files, if you experience problems with the archive refer to this page for help:
+
+http://kb.iu.edu/data/acfi.html
+
+How to Run:
+
+1.  Run MATLAB and change directory to the code/ directory
+
+The relative paths to the data/, temp/, and BLAST/ directories from the code/ directory are all hard coded into the program.  In order to successfully run FANNGO you first need to open MATLAB on whatever machine it is you are operating.  In MATLAB you then need to change your working directory to the FANGO_your_architecture/code/ directory.  Since all paths to needed directories are relative to the code/ directory, simply adding the code/ directory to your path will cause errors when you attempt to run FANNGO from a different place.
+
+2.  Acquire a cell array of sequences.
+
+In order to test FANNGO you will need at least one sequence in a cell array.  Perhaps the easiest way to do this is to use MATLAB's internal "fastaread" command.  This command allows you to easily read a fasta file into a cell array of headers and sequences by typing:
+
+[Headers, Sequences] = fastaread('sequences.fasta')
+
+3.  Run MAIN
+
+Now that you have changed your working directory to code/ and generated a cell array of sequences you  are ready to run FANNGO by passing that cell array to the MAIN function in code/.  The command for doing should look something like this:
+
+>PRED = MAIN(Sequences);
+
+If you ever forget how to run MAIN simply type
+
+>help MAIN
+
+from the MATLAB command line while in the code/ directory.
+
+4.  Wait
+
+Depending on how many sequences you submit to MAIN and how fast your computer is you will have to wait anywhere from 15 seconds for one sequence, to about an hour for 20,000 sequences for your results to be finished.
+
+5.  Look at your results
+
+Once MAIN is done running you should be returned a PRED object.  This object contains three data structures
+
+PRED.scores - A n sequence by m term matrix of term scores
+
+PRED.accessions -  an m term length cell array of term accessions
+
+PRED.names - an m term of go term names
+
+Each row in PRED.scores corresponds to a sequence in the cell array you provided.  If you want the prediction scores for the 10th sequence in your cell array type
+
+>PRED.scores(10,:)
+
+Each column in scores corresponds to a cell in accessions and names.
+
+Notes:
+
+If you encounter that you run out or RAM because your cell array of sequences is too large, the memory requirements of FANN-GO can be reduced by limiting the number of sequences you pass to MAIn at a single time.
+
+Permissions:
+
+Keep in mind that this program writes temporary files to the temp/ directory each time it is ran.  These files are deleted after each iteration.  The program also executes a BLAST executable in the BLAST/ directory.  If you find that FANNGO is not working properly check that the proper permissions are set for these directories to allow execution of the BLAST executable, and the writing and deleting of temporary files to the temp/ directory.
+
